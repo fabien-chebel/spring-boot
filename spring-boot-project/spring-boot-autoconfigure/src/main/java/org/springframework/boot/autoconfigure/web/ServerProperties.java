@@ -490,6 +490,12 @@ public class ServerProperties {
 		private Duration connectionTimeout;
 
 		/**
+		 * Amount of time the connector will wait, after starting an async operation, for
+		 * it to complete.
+		 */
+		private Duration asyncTimeout;
+
+		/**
 		 * Whether to reject requests with illegal header names or values.
 		 */
 		@Deprecated(since = "2.7.12", forRemoval = true) // Remove in 3.3
@@ -649,6 +655,14 @@ public class ServerProperties {
 
 		public void setConnectionTimeout(Duration connectionTimeout) {
 			this.connectionTimeout = connectionTimeout;
+		}
+
+		public Duration getAsyncTimeout() {
+			return this.asyncTimeout;
+		}
+
+		public void setAsyncTimeout(Duration asyncTimeout) {
+			this.asyncTimeout = asyncTimeout;
 		}
 
 		@Deprecated(since = "3.2.0", forRemoval = true)

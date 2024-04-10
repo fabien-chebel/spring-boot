@@ -426,6 +426,14 @@ class TomcatWebServerFactoryCustomizerTests {
 	}
 
 	@Test
+	void asyncTimeout() {
+		bind("server.tomcat.async-timeout=60s");
+		customizeAndRunServer((server) -> assertThat(
+				server.getTomcat().getConnector().getAsyncTimeout())
+			.isEqualTo(60000));
+	}
+
+	@Test
 	void accessLogBufferingCanBeDisabled() {
 		bind("server.tomcat.accesslog.enabled=true", "server.tomcat.accesslog.buffered=false");
 		TomcatServletWebServerFactory factory = customizeAndGetFactory();

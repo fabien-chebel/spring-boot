@@ -120,6 +120,8 @@ public class TomcatWebServerFactoryCustomizer
 		map.from(properties::getUriEncoding).to(factory::setUriEncoding);
 		map.from(properties::getConnectionTimeout)
 			.to((connectionTimeout) -> customizeConnectionTimeout(factory, connectionTimeout));
+		map.from(properties::getAsyncTimeout)
+			.to((asyncTimeout) -> customizeAsyncTimeout(factory, asyncTimeout));
 		map.from(properties::getMaxConnections)
 			.when(this::isPositive)
 			.to((maxConnections) -> customizeMaxConnections(factory, maxConnections));
@@ -202,6 +204,10 @@ public class TomcatWebServerFactoryCustomizer
 	private void customizeConnectionTimeout(ConfigurableTomcatWebServerFactory factory, Duration connectionTimeout) {
 		customizeHandler(factory, (int) connectionTimeout.toMillis(), AbstractProtocol.class,
 				AbstractProtocol::setConnectionTimeout);
+	}
+
+	private void customizeAsyncTimeout(ConfigurableTomcatWebServerFactory factory, Duration asyncTimeout) {
+		factory.addConnectorCustomizers((connector) -> connector.setAsyncTimeout(asyncTimeout.toMillis()));
 	}
 
 	private void customizeRelaxedPathChars(ConfigurableTomcatWebServerFactory factory, String relaxedChars) {
